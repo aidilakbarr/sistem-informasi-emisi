@@ -3,7 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState } from "react";
-
+import { setLoading } from "@/redux/slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 interface LoginFormProps {
   onSubmit: (email: string, password: string) => void;
 }
@@ -11,9 +13,13 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const dispatch = useDispatch();
+  const loading = useSelector((state: RootState) => state.user.loading);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    dispatch(setLoading());
     onSubmit(email, password);
   };
 
@@ -22,7 +28,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
       <div className="card lg:card-side bg-base-100 shadow-xl max-w-4xl w-full">
         <figure className="lg:w-1/2">
           <Image
-            src={"https://picsum.photos/seed/login/800/600"}
+            src={"/assets/img/pngwing.com.png"}
             layout="intrinsic" // Automatically adjusts size
             width={1000} // Set a base width
             height={1000}
@@ -88,7 +94,11 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               </label>
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary" type="submit">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={loading}
+              >
                 Login
               </button>
             </div>
@@ -96,7 +106,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
           <div className="divider">OR</div>
           <div className="text-center">
             <p>Dont have an account?</p>
-            <Link href="/register" className="link link-primary">
+            <Link href="/auth/register" className="link link-primary">
               Sign up now
             </Link>
           </div>

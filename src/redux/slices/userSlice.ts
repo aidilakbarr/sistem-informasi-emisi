@@ -1,13 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-}
-
 interface UserState {
-  user: User | null;
+  user: string | null;
   loading: boolean;
   error: string | null;
 }
@@ -23,7 +17,7 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     // Action untuk login
-    login(state, action: PayloadAction<User>) {
+    login(state, action: PayloadAction<string>) {
       state.user = action.payload;
       state.loading = false;
       state.error = null;

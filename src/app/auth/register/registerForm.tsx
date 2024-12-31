@@ -45,7 +45,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
       <div className="card lg:card-side bg-base-100 shadow-xl max-w-4xl w-full">
         <figure className="lg:w-1/2">
           <Image
-            src={"https://picsum.photos/seed/login/800/600"}
+            src={"/assets/img/pngwing.com.png"}
             layout="intrinsic" // Automatically adjusts size
             width={1000} // Set a base width
             height={1000}
@@ -163,7 +163,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
           <div className="divider">OR</div>
           <div className="text-center">
             <p>have an account?</p>
-            <Link href="/login" className="link link-primary">
+            <Link href="/auth/login" className="link link-primary">
               Login
             </Link>
           </div>
