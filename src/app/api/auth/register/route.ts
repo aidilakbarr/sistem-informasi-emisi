@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import argon2 from "argon2";
 import * as z from "zod";
-import { generateToken } from "@/utils/jwt";
+import { generateRefreshToken, generateToken } from "@/utils/jwt";
 
 const prisma = new PrismaClient();
 
@@ -74,6 +74,12 @@ export async function POST(req: Request) {
     });
 
     const token = generateToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { refreshtoken: refreshToken },
+    });
 
     return NextResponse.json({ user, token }, { status: 201 });
   } catch (error) {

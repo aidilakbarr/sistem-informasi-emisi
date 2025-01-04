@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import argon2 from "argon2";
-import { generateToken } from "@/utils/jwt";
+import { generateRefreshToken, generateToken } from "@/utils/jwt";
 
 const prisma = new PrismaClient();
 export async function POST(req: Request) {
@@ -42,14 +42,29 @@ export async function POST(req: Request) {
     }
 
     const token = generateToken(user);
+    const refreshToken = generateRefreshToken(user);
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { refreshtoken: refreshToken },
+    });
+
     const name = user.username;
 
-    return NextResponse.json(
+    const response = NextResponse.json(
       { message: "Login success", name, token },
       {
         status: 201,
       }
     );
+    response.cookies.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
