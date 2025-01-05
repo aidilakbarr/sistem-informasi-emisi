@@ -8,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: "picsum.photos",
         pathname: "/**", // Allow any path under picsum.photos
       },
+      {
+        protocol: "https",
+        hostname: "img.daisyui.com", // Menambahkan img.daisyui.com
+        pathname: "/**", // Allow any path under img.daisyui.com
+      },
     ],
   },
 };

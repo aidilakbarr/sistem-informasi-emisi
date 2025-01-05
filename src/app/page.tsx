@@ -1,5 +1,6 @@
 "use client";
 
+import Header from "@/components/header";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 
@@ -11,7 +12,7 @@ const UserPage = () => {
 
   return (
     <div>
-      <h1>Dashboard</h1>
+      <Header />
       {username ? <p>Welcome, {username?.user}</p> : <p>Loading</p>}
     </div>
   );
