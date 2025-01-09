@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
         hostname: "img.daisyui.com", // Menambahkan img.daisyui.com
         pathname: "/**", // Allow any path under img.daisyui.com
       },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com", // Menambahkan img.daisyui.com
+        pathname: "/**", // Allow any path under img.daisyui.com
+      },
     ],
   },
 };

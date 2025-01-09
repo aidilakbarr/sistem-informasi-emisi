@@ -6,7 +6,12 @@ import LoginForm from "./loginForm";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { login } from "@/redux/slices/userSlice";
-const LoginPage: React.FC = () => {
+
+interface LoginPageProps {
+  onLoginSuccess: () => void;
+}
+
+const LoginPage: React.FC<LoginPageProps> = ({ onLoginSuccess }) => {
   const notifyError = () => {
     toast.error("Gagal login", {
       position: "top-center",
@@ -31,7 +36,9 @@ const LoginPage: React.FC = () => {
 
       localStorage.setItem("token", token);
       // Redirect to dashboard page
-      router.push("/");
+      router.push("/home");
+
+      onLoginSuccess();
     } catch (error) {
       console.error(error);
       notifyError();

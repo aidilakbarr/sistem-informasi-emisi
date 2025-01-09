@@ -22,13 +22,13 @@ const RegisterPage: React.FC = () => {
 
       localStorage.setItem("token", token);
       // Redirect to dashboard page
-      router.push("/");
+      router.push("/home");
     } catch (error) {
       console.error(error);
     }
   };
   return (
-    <div>
+    <div className="w-3/6">
       <RegisterForm onSubmit={handleRegisterSubmit} />
     </div>
   );
