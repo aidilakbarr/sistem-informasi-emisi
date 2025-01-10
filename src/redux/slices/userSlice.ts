@@ -28,6 +28,9 @@ const userSlice = createSlice({
     setLoading(state) {
       state.loading = true;
     },
+    setSuccess(state) {
+      state.loading = false;
+    },
     setError(state, action: PayloadAction<string>) {
       state.error = action.payload;
       state.loading = false;
@@ -35,6 +38,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { login, logout, setLoading, setError } = userSlice.actions;
+export const { login, logout, setLoading, setSuccess, setError } =
+  userSlice.actions;
 
 export default userSlice.reducer;

@@ -76,9 +76,12 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit }) => {
               />
             </label>
             <label className="label">
-              <a href="#" className="label-text-alt link link-hover">
+              <Link
+                href="/forgot-password"
+                className="label-text-alt link link-hover"
+              >
                 Forgot password?
-              </a>
+              </Link>
             </label>
           </div>
           <div className="form-control mt-6">

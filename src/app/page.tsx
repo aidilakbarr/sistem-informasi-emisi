@@ -1,15 +1,16 @@
 "use client";
 
-import Footer from "@/components/footer";
-import Header from "@/components/header";
+import { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
 
 const UserPage = () => {
-  return (
-    <div>
-      <Header />
+  const username = useSelector((state: RootState) => state.user);
 
-      <Footer />
-    </div>
+  console.log(username);
+  console.log(useSelector((state: RootState) => state.user));
+
+  return (
+    <div>{username ? <p>Welcome, {username?.user}</p> : <p>Loading</p>}</div>
   );
 };
 

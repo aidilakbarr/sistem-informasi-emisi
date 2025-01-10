@@ -12,6 +12,9 @@ const secretRefreshToken = process.env.JWT_KEY_REFRESH_TOKEN;
 if (!secretKey) {
   throw new Error("No JWT_KEY provided");
 }
+if (!secretRefreshToken) {
+  throw new Error("No JWT_KEY refresh provided");
+}
 
 export const generateToken = (user: User) => {
   const payload = {
@@ -32,7 +35,7 @@ export const generateRefreshToken = (user: User) => {
 
   const option = { expiresIn: "7d" };
 
-  return jwt.sign(payload, secretKey, option);
+  return jwt.sign(payload, secretRefreshToken, option);
 };
 
 export const verifyToken = (token: string) => {

@@ -82,7 +82,7 @@ export default function Header() {
         {!user || user.user === null ? (
           <div>
             <button
-              className="btn"
+              className="btn btn-outline btn-success"
               onClick={() => {
                 const modal = document.getElementById("my_modal_3");
                 if (modal) {
@@ -96,7 +96,7 @@ export default function Header() {
               <div className="modal-box">
                 <form method="dialog">
                   {/* if there is a button in form, it will close the modal */}
-                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10">
                     ✕
                   </button>
                 </form>

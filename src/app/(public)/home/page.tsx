@@ -6,15 +6,6 @@ const HomePage: React.FC = () => {
     <div>
       <div className="hero min-h-screen ">
         <div className="hero-content text-neutral-content text-center justify-between w-full -z-0 ">
-          <figure className="w-96 h-96">
-            <Image
-              src={"/assets/img/hero.jpg"}
-              alt="hero-img"
-              width={400}
-              height={400}
-              className="z-0 "
-            />
-          </figure>
           <div className="max-w-3xl text-left">
             <h1 className="mb-5 text-5xl font-bold text-[#3E7B27] text-left">
               Ketahui Jejak Karbonmu, Mulai Perubahan untuk Bumi yang Lebih
@@ -24,6 +15,15 @@ const HomePage: React.FC = () => {
               Mulai Sekarang
             </button>
           </div>
+          <figure className="w-96 h-96">
+            <Image
+              src={"/assets/img/hero.jpg"}
+              alt="hero-img"
+              width={400}
+              height={400}
+              className="z-0 "
+            />
+          </figure>
         </div>
       </div>
       <section className="px-12">
