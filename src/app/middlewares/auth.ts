@@ -1,4 +1,4 @@
-import { verifyToken } from "@/utils/jwt";
+import { verifyToken } from "@/lib/jwt";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 

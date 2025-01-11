@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import argon2 from "argon2";
-import { generateRefreshToken, generateToken } from "@/utils/jwt";
+import { generateRefreshToken, generateToken } from "@/lib/jwt";
 
 const prisma = new PrismaClient();
 export async function POST(req: Request) {
@@ -24,6 +24,13 @@ export async function POST(req: Request) {
         {
           error: "Email not registered",
         },
+        { status: 400 }
+      );
+    }
+
+    if (!user.isemailverified) {
+      return NextResponse.json(
+        { message: "email not verified" },
         { status: 400 }
       );
     }

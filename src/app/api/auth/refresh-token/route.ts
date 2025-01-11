@@ -1,4 +1,4 @@
-import { generateToken, verifyRefreshToken } from "@/utils/jwt";
+import { generateToken, verifyRefreshToken } from "@/lib/jwt";
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 

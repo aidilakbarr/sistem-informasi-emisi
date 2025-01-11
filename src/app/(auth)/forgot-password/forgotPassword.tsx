@@ -1,6 +1,6 @@
 "use client";
 
-import { setLoading } from "@/redux/slices/userSlice";
+import { setLoading, setUserEmail } from "@/redux/slices/userSlice";
 import { RootState } from "@/redux/store";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +19,7 @@ const FormResetPassword: React.FC<LoginFormProps> = ({ onSubmit }) => {
     e.preventDefault();
 
     dispatch(setLoading());
+    dispatch(setUserEmail(email));
 
     onSubmit(email);
   };

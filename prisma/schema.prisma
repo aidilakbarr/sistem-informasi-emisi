@@ -21,5 +21,7 @@ model User {
   password  String
   resetotp String?
   resetotpexpired DateTime?
+  isemailverified Boolean @default(false)
+  verificationtoken String?
   createAt  DateTime  @default(now())
 }

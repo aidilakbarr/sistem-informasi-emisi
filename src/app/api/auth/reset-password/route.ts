@@ -8,7 +8,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
 
-    const { otp, newPassword } = body;
+    const { otp, newPassword, email } = body;
     if (!otp || !newPassword) {
       return NextResponse.json(
         { message: "field is required" },
@@ -16,24 +16,36 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const userOtp = await prisma.user.findFirst({
+    if (!email) {
+      return NextResponse.json({ message: "Email empty" }, { status: 400 });
+    }
+
+    const userOtp = await prisma.user.findUnique({
       where: {
-        resetotp: otp,
-        resetotpexpired: {
-          gt: new Date(), // Bandingkan dengan waktu saat ini
-        },
+        email: email,
       },
     });
 
     if (!userOtp) {
       return NextResponse.json(
         {
-          message: "OTP Invalid",
+          message: "Email not found",
         },
         {
           status: 401,
         }
       );
+    }
+
+    if (otp !== userOtp.resetotp) {
+      return NextResponse.json({ message: "OTP Invalid" }, { status: 400 });
+    }
+
+    if (
+      userOtp.resetotpexpired === null ||
+      userOtp.resetotpexpired < new Date()
+    ) {
+      return NextResponse.json({ message: "OTP Expired" }, { status: 400 });
     }
 
     const newHashPassword = await argon2.hash(newPassword);
@@ -42,6 +54,8 @@ export async function POST(req: NextRequest) {
       where: { id: userOtp.id },
       data: {
         password: newHashPassword,
+        resetotp: null,
+        resetotpexpired: null,
       },
     });
 

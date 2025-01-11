@@ -1,8 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-import argon2 from "argon2";
 import * as z from "zod";
-import { generateRefreshToken, generateToken } from "@/utils/jwt";
+import argon2 from "argon2";
+import { generateEmailToken } from "@/utils/generateOTP";
+import { generateRefreshToken } from "@/lib/jwt";
+import sendVerificationEmail from "@/utils/sendVerifyEmail";
 
 const prisma = new PrismaClient();
 
@@ -56,7 +58,7 @@ export async function POST(req: Request) {
       where: { email },
     });
 
-    if (existingUser) {
+    if (existingUser && existingUser.isemailverified) {
       return NextResponse.json(
         { error: "Email is already taken" },
         { status: 400 }
@@ -65,23 +67,44 @@ export async function POST(req: Request) {
 
     const hashedPassword = await argon2.hash(password);
 
+    const emailToken = generateEmailToken();
+
+    if (existingUser && !existingUser.isemailverified) {
+      await prisma.user.update({
+        where: { id: existingUser.id },
+        data: {
+          verificationtoken: emailToken,
+          username: username,
+          password: hashedPassword,
+        },
+      });
+      sendVerificationEmail(email, emailToken);
+      return NextResponse.json(
+        { error: "Verification Email Sending in your gmail" },
+        { status: 200 }
+      );
+    }
+
     const user = await prisma.user.create({
       data: {
         username,
         email,
         password: hashedPassword,
+        verificationtoken: emailToken,
       },
     });
-
-    const token = generateToken(user);
     const refreshToken = generateRefreshToken(user);
-
     await prisma.user.update({
       where: { id: user.id },
       data: { refreshtoken: refreshToken },
     });
 
-    return NextResponse.json({ user, token }, { status: 201 });
+    sendVerificationEmail(email, emailToken);
+
+    return NextResponse.json(
+      { message: "Verification email sending..." },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

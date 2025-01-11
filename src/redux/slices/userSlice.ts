@@ -2,14 +2,18 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface UserState {
   user: string | null;
+  email: string | null;
   loading: boolean;
   error: string | null;
+  verify: boolean;
 }
 
 const initialState: UserState = {
   user: null,
+  email: null,
   loading: false,
   error: null,
+  verify: false,
 };
 
 const userSlice = createSlice({
@@ -35,10 +39,23 @@ const userSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     },
+    setUserEmail(state, action: PayloadAction<string>) {
+      state.email = action.payload;
+    },
+    setEmailVerifySuccess(state) {
+      state.verify = true;
+    },
   },
 });
 
-export const { login, logout, setLoading, setSuccess, setError } =
-  userSlice.actions;
+export const {
+  login,
+  logout,
+  setLoading,
+  setSuccess,
+  setError,
+  setUserEmail,
+  setEmailVerifySuccess,
+} = userSlice.actions;
 
 export default userSlice.reducer;

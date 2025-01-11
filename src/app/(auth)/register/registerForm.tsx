@@ -1,7 +1,11 @@
 "use client";
 
+import { setLoading } from "@/redux/slices/userSlice";
+import { RootState } from "@/redux/store";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 interface RegisterFormProps {
   onSubmit: (
@@ -17,12 +21,24 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confPassword, setConfPassword] = useState<string>("");
+  const loading = useSelector((state: RootState) => state.user.loading);
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.user.user);
+  const router = useRouter();
 
+  useEffect(() => {
+    if (user) {
+      router.push("/home");
+    }
+  });
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confPassword) {
       return;
     }
+
+    localStorage.setItem("email", email);
+    dispatch(setLoading());
     onSubmit(username, email, password, confPassword);
   };
 
@@ -131,7 +147,11 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onSubmit }) => {
               </label>
             </div>
             <div className="form-control mt-6">
-              <button className="btn btn-primary" type="submit">
+              <button
+                className="btn btn-primary"
+                type="submit"
+                disabled={loading}
+              >
                 Register
               </button>
             </div>

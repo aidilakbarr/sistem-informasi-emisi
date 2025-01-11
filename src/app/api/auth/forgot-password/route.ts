@@ -1,8 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
-import crypto from "crypto";
 import sendEmail from "@/utils/sendEmail";
+import { generateOTP, generateOTPExpired } from "@/utils/generateOTP";
 
 const prisma = new PrismaClient();
 export async function POST(req: NextRequest) {
@@ -52,8 +52,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate OTP and save it to the database
-    const OTP: string = crypto.randomInt(100000, 999999).toString();
-    const OTPExpired: Date = new Date(Date.now() + 5 * 60 * 1000);
+    const OTP: string = generateOTP();
+    const OTPExpired: Date = generateOTPExpired();
     await prisma.user.update({
       where: {
         email,
