@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import LoginForm from "./loginForm";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { login, setError, setSuccess } from "@/redux/slices/userSlice";
+import { login, setError, setSuccess, setUser } from "@/redux/slices/userSlice";
 
 interface LoginPageProps {
   onLoginSuccess: () => void;
@@ -33,6 +33,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
       console.log(response);
 
       dispatch(login(response.data.name));
+      dispatch(setUser(JSON.stringify(response)));
 
       localStorage.setItem("token", token);
       // Redirect to dashboard page
@@ -45,6 +46,7 @@ const LoginPage: React.FC<LoginPageProps> = () => {
       notifyError();
     }
   };
+
   return (
     <div>
       <LoginForm onSubmit={handleLoginSubmit} />

@@ -11,7 +11,7 @@ export default function RootLayout({
   return (
     <Provider store={store}>
       <html lang="en">
-        <body>{children}</body>
+        <body className="overflow-y-scroll ">{children}</body>
       </html>
     </Provider>
   );

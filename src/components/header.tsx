@@ -1,16 +1,34 @@
 import LoginPage from "@/app/(auth)/login/page";
-import { logout } from "@/redux/slices/userSlice";
-import { RootState } from "@/redux/store";
+import { logout, setUser } from "@/redux/slices/userSlice";
+import getUser from "@/utils/getUser";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 export default function Header() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const user = useSelector((state: RootState) => state.user);
+  const [isLogin, setIsLogin] = useState<boolean>(false);
 
-  console.log(user);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const user = await getUser();
+        if (!user) {
+          throw new Error("Token denied");
+        }
+
+        dispatch(setUser(JSON.stringify(user)));
+        setIsLogin(true);
+        return user;
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUserData();
+  }, [dispatch]);
 
   const handleLogout = () => {
     try {
@@ -79,39 +97,7 @@ export default function Header() {
         </ul>
       </div>
       <div className="navbar-end">
-        {!user || user.user === null ? (
-          <div>
-            <button
-              className="btn btn-outline btn-success"
-              onClick={() => {
-                const modal = document.getElementById("my_modal_3");
-                if (modal) {
-                  (modal as HTMLDialogElement).showModal();
-                }
-              }}
-            >
-              Login
-            </button>
-            <dialog id="my_modal_3" className="modal">
-              <div className="modal-box">
-                <form method="dialog">
-                  {/* if there is a button in form, it will close the modal */}
-                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10">
-                    ✕
-                  </button>
-                </form>
-                <LoginPage
-                  onLoginSuccess={() => {
-                    const modal = document.getElementById(
-                      "my_modal_3"
-                    ) as HTMLDialogElement;
-                    if (modal) modal.close();
-                  }}
-                />
-              </div>
-            </dialog>
-          </div>
-        ) : (
+        {isLogin ? (
           <div className="dropdown dropdown-end z-50">
             <div
               tabIndex={0}
@@ -147,6 +133,38 @@ export default function Header() {
                 <a onClick={handleLogout}>Logout</a>
               </li>
             </ul>
+          </div>
+        ) : (
+          <div>
+            <button
+              className="btn btn-outline btn-success"
+              onClick={() => {
+                const modal = document.getElementById("my_modal_3");
+                if (modal) {
+                  (modal as HTMLDialogElement).showModal();
+                }
+              }}
+            >
+              Login
+            </button>
+            <dialog id="my_modal_3" className="modal">
+              <div className="modal-box">
+                <form method="dialog">
+                  {/* if there is a button in form, it will close the modal */}
+                  <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10">
+                    ✕
+                  </button>
+                </form>
+                <LoginPage
+                  onLoginSuccess={() => {
+                    const modal = document.getElementById(
+                      "my_modal_3"
+                    ) as HTMLDialogElement;
+                    if (modal) modal.close();
+                  }}
+                />
+              </div>
+            </dialog>
           </div>
         )}
       </div>

@@ -45,6 +45,9 @@ const userSlice = createSlice({
     setEmailVerifySuccess(state) {
       state.verify = true;
     },
+    setUser(state, action: PayloadAction<string>) {
+      state.user = action.payload;
+    },
   },
 });
 
@@ -56,6 +59,7 @@ export const {
   setError,
   setUserEmail,
   setEmailVerifySuccess,
+  setUser,
 } = userSlice.actions;
 
 export default userSlice.reducer;
