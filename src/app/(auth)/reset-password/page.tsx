@@ -1,7 +1,7 @@
 "use client";
 
 import { ToastContainer, toast } from "react-toastify";
-import FormResetPassword from "./forgotPassword";
+import FormResetPassword from "./resetPassword";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
