@@ -74,14 +74,14 @@ export default function Header() {
               <Link href={"/input"}>Input Kegiatan</Link>
             </li>
             <li className="hover:text-[#3E7B27]">
-              <Link href={"/kontact"}>Kontak</Link>
+              <Link href={"/contact"}>Kontak</Link>
             </li>
           </ul>
         </div>
         <a className="btn btn-ghost text-xl text-[#3E7B27]">Emisiku</a>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1 gap-2">
           <li className="hover:text-[#3E7B27]">
             <Link href={"/home"}>Beranda</Link>
           </li>
@@ -92,7 +92,7 @@ export default function Header() {
             <Link href={"/input"}>Input Kegiatan</Link>
           </li>
           <li className="hover:text-[#3E7B27]">
-            <Link href={"/kontact"}>Kontak</Link>
+            <Link href={"/contact"}>Kontak</Link>
           </li>
         </ul>
       </div>

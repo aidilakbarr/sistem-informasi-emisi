@@ -23,5 +23,21 @@ model User {
   resetotpexpired DateTime?
   isemailverified Boolean @default(false)
   verificationtoken String?
+  activies Activity[]
   createAt  DateTime  @default(now())
+}
+
+model Activity {
+  id String    @id @default(uuid())
+  userid String
+  date DateTime
+  transportasidarat Json
+  transportasiudara Json
+  transportasilaut Json
+  dayarumahtangga Json
+  peralatanrumahtangga Json
+  makanan Json
+  sampah Json
+  createAt DateTime @default(now())
+  user User @relation(fields: [userid], references: [id])
 }
